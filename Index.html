@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tienda Virtual - Gestión de Inventario</title>
+    <link rel="stylesheet" href="Styles.css">
+    
+</head>
+<body>
+<!-- Menu -->
+    <nav class="navbar">
+        <h1>Tienda Virtual</h1>
+        <ul>
+            <li><a href="inicio.html">Inicio</a></li>
+            <li><a href="Index.html">Catalogo</a></li>
+            <li><a href="#">Contacto</a></li>
+        </ul>
+    </nav>
+    <div class="container">
+        <div class="search-bar">
+            <input type="text" id="busqueda" placeholder="Buscar producto..." onkeyup="filtrarProductos()">
+            <select id="categoriaFiltro" onchange="filtrarProductos()">
+                <option value="">Todas las categorías</option>
+                <option value="Electrónica">Electrónica</option>
+                <option value="Hogar">Hogar</option>
+            </select>
+        </div>
+        <div id="productos" class="productos"></div>
+        <h3 class="total" id="totalInventario">Total: $0</h3>
+    </div>    
+    <footer>
+        <br>
+    </footer>
+    <script>
+    let inventario = [
+        { id: 1, nombre: "Foco Inteligente", categoria: "Electrónica", cantidad: 10, stock:18, precio: 150, imagen: "IMG/foco Inteligente.jpg" },
+        { id: 2, nombre: "Cámara de Seguridad", categoria: "Hogar", cantidad: 15, stock:30, precio: 1500, imagen: "IMG/Camara.jpg" },
+        { id: 3, nombre: "Dispensador de Agua Automático", categoria: "Electrónica", cantidad: 2, stock:28, precio: 200, imagen: "IMG/Dispensadoragua.avif" },
+        { id: 4, nombre: "Contenedores para Alimentos", categoria: "Hogar", cantidad: 10, stock:20, precio: 50, imagen: "IMG/contenedor.jpg" }
+    ];
+    
+    function filtrarProductos() {
+        let criterio = document.getElementById("busqueda").value.toLowerCase();
+        let categoria = document.getElementById("categoriaFiltro").value;
+        let resultado = inventario.filter(p => 
+            (p.nombre.toLowerCase().includes(criterio) || criterio === "") &&
+            (p.categoria === categoria || categoria === "")
+        );
+        mostrarInventario(resultado);
+    }
+    
+    function mostrarInventario(lista) {
+        let contenedor = document.getElementById("productos");
+        contenedor.innerHTML = "";
+        lista.forEach(p => {
+            let productoHTML = `<div class="producto">
+                <img src="${p.imagen}" alt="${p.nombre}">
+                <h3>${p.nombre}</h3>
+                <p>Categoría: ${p.categoria}</p>
+                <p>Cantidad: ${p.cantidad}</p>
+                <p>Precio: $${p.precio}</p>
+                <p>Stock: ${p.stock}</p>
+                <button onclick="agregarProducto(${p.id})">+</button>
+                <button onclick="quitarProducto(${p.id})">-</button>
+            </div>`;
+            contenedor.innerHTML += productoHTML;
+        });
+        calcularTotalInventario();
+    }
+    
+    function agregarProducto(id) {
+    let producto = inventario.find(p => p.id === id);
+    if (producto) {
+        if (producto.cantidad < producto.stock) {
+            producto.cantidad++;
+            mostrarInventario(inventario);
+        } else {
+            alert(`Solo puedes agregar un máximo de ${producto.stock} unidades de "${producto.nombre}".`);
+        }
+    }
+}
+    
+    function quitarProducto(id) {
+        let producto = inventario.find(p => p.id === id);
+        if (producto && producto.cantidad > 0) {
+            producto.cantidad--;
+            mostrarInventario(inventario);
+        }
+    }
+    
+    function calcularTotalInventario() {
+        let total = inventario.reduce((sum, p) => sum + (p.precio * p.cantidad), 0);
+        document.getElementById("totalInventario").innerText = `Total: $${total}`;
+    
+    }
+    
+    window.onload = () => mostrarInventario(inventario);</script>
+</body>
+</html>
