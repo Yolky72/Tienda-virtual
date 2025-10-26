@@ -22,6 +22,8 @@ El proyecto FinCoach fue concebido como una aplicación de una sola página util
 ## Retos que enfrentamos
 **Creación de Contenido y Estrategia:** El principal reto fue traducir el concepto de un asistente de inversión impulsado por IA en un mensaje claro y convincente para la página de aterrizaje, centrándose en la solución y el problema.
 
+**Implementacion de IA y API's:** Fue un gran reto hacer que funcionen y puedan converger entre ellas tratando que de una se apoye la otra y vicebersa, y resolver los errores que se nos atravesaban por el camino.
+
 ## Accomplishments that we're proud of
 
 ## What we learned
